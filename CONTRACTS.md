@@ -16,7 +16,12 @@ checkpoint.py
 
 embedder.py
   load_embedding_model(model_name: str, device: str, load_in_8bit: bool) -> SentenceTransformer
-  embed_texts(model, texts: list[str], batch_size: int) -> np.ndarray  # float32, shape (N, dim)
+  embed_texts(model, texts: list[str], batch_size: int,
+              batch_meta: list[str] | None = None) -> (np.ndarray, list[int])
+    -> embeddings float32 shape (N, dim), alinhado aos textos mantidos (ordem de entrada
+       menos os pulados); skipped_indices = índices originais dos textos descartados por
+       OOM persistente (batch_size=1). batch_meta: rótulos paralelos (ex.: filename) usados
+       na mensagem impressa no terminal ao pular um texto.
 
 save_parquet.py
   save_shard_parquet(records: list[dict], output_path: str) -> None
